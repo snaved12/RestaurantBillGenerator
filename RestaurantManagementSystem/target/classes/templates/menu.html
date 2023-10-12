@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #ff5733;
+            padding: 20px 0;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        table, th, td {
+            border: 2px solid #ff5733;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #ff5733;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #ffefd5;
+        }
+        tr:nth-child(odd) {
+            background-color: #ffebcd;
+        }
+        /* New CSS for the "Food Order" button */
+        #food-order-button {
+            position: absolute;
+            top: 70px;
+            right: 10px;
+            background-color: #ff5733;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Restaurant Menu</h1>
+    <button id="food-order-button"><a href="/order" style="text-decoration: none; color: white;">Food Order</a></button>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Item Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="menu : ${menus}">
+                <td th:text="${menu.id}"></td>
+                <td th:text="${menu.item_name}"></td>
+                <td th:text="${menu.price}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

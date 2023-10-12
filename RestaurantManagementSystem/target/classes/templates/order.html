@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Order</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #ffbf00, #ff0080);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background: linear-gradient(45deg, #ff0080, #ffbf00);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        form {
+            text-align: center;
+        }
+        .order-item {
+            margin: 20px 0;
+        }
+        label {
+            font-weight: bold;
+        }
+        .add-item-button, .clear-orders-button, .generate-bill-button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .add-item-button:hover, .clear-orders-button:hover, .generate-bill-button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        /* Centered container for Placed Orders and buttons */
+        .center-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Place Your Food Order</h1>
+    <form action="/place-order" method="post">
+        <div class="order-items">
+            <div class="order-item">
+                <label for="itemId">Item ID:</label>
+                <input type="text" name="itemId[]" required>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity[]" required>
+                <button type="button" class="add-item-button">Add</button>
+            </div>
+        </div>
+        <button type="submit" class="add-item-button">Place Order</button>
+    </form>
+
+    <!-- Centered container for Placed Orders and buttons -->
+    <div class="center-container">
+        <h2>Placed Orders</h2>
+        <ul class="placed-orders">
+            <!-- Placed orders will be displayed here -->
+        </ul>
+
+        <!-- Buttons inside the centered container -->
+        <button type="button" class="clear-orders-button">Clear Orders</button>
+        <button type="button" class="generate-bill-button">Generate Bill</button>
+    </div>
+
+    <script>
+        // JavaScript to add items and display placed orders
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("add-item-button")) {
+                const orderItem = e.target.closest(".order-item");
+                const itemId = orderItem.querySelector("[name='itemId[]']").value;
+                const quantity = orderItem.querySelector("[name='quantity[]']").value;
+
+                // Create an object to represent the order and display it in the "Placed Orders" section
+                const order = {
+                    itemId: itemId,
+                    quantity: quantity
+                };
+
+                const placedOrders = document.querySelector(".placed-orders");
+                const listItem = document.createElement("li");
+                listItem.textContent = `Item ID: ${order.itemId}, Quantity: ${order.quantity}`;
+                placedOrders.appendChild(listItem);
+            } else if (e.target.classList.contains("clear-orders-button")) {
+                clearOrders();
+            } else if (e.target.classList.contains("generate-bill-button")) {
+                generateBill();
+            }
+        });
+
+        function clearOrders() {
+            const placedOrders = document.querySelector(".placed-orders");
+            placedOrders.innerHTML = "";
+
+            // Add an additional logic here to clear the orders data on the server (Java class).
+            // You will need to make an AJAX request to your server to handle this.
+            // An example of how to make the request with fetch is provided below:
+            fetch('/clear-orders', {
+                method: 'POST'
+            }).then(function(response) {
+                // Handle the response if needed
+            });
+        }
+
+        function generateBill() {
+            // Add code here to generate and download the bill, for example, using AJAX to request a bill PDF.
+            // You'll need server-side logic to generate the bill PDF.
+            console.log("Generate Bill button clicked.");
+            
+            // Trigger an AJAX request to /get-bill here (you can use fetch or another AJAX library)
+            fetch('/get-bill', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/pdf'
+                }
+            })
+            .then(function(response) {
+                // Handle the response or download the generated PDF
+            })
+            .catch(function(error) {
+                console.error("Error while fetching the bill:", error);
+            });
+        }
+    </script>
+</body>
+</html>
